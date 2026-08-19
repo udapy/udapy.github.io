@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{{ page.lead | default: site.description }}">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f6f3ed">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+</head>
+<body class="home-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header>
+      <nav class="site-nav" aria-label="Site">
+        <a href="{{ '/' | relative_url }}" aria-current="page">{{ site.title }}</a>
+      </nav>
+    </header>
+    <main id="main">
+      {{ content }}
+    </main>
+    <footer class="site">{{ site.title }}</footer>
+  </div>
+  <script src="{{ '/assets/js/blackhole.js' | relative_url }}"></script>
+</body>
+</html>

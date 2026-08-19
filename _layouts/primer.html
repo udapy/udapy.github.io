@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.lead }}">
+  <meta name="author" content="{{ page.author }}">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f6f3ed">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.lead }}">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+</head>
+<body class="primer-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" id="progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  <div class="wrap">
+    <header>
+      <nav class="site-nav" aria-label="Site">
+        <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        {% if page.glossary %}
+        <button class="glossary-toggle" type="button">Glossary</button>
+        {% endif %}
+      </nav>
+    </header>
+    <main id="main">
+      <header class="primer">
+        <h1>{{ page.title }}</h1>
+        {% if page.lead %}<p class="lead">{{ page.lead }}</p>{% endif %}
+        {% if page.tags %}
+        <div class="tags" aria-label="Topics">
+          {% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+        </div>
+        {% endif %}
+        <div class="byline">
+          <div class="byline-name">{{ page.author }}</div>
+          {% if page.date %}<div class="byline-detail">{{ page.date | date: "%B %-d, %Y" }}{% if page.updated %} · updated {{ page.updated | date: "%B %-d, %Y" }}{% endif %}</div>{% endif %}
+        </div>
+      </header>
+      <nav class="toc" id="toc" aria-label="On this page" hidden>
+        <ul class="toc-list" id="toc-list"></ul>
+      </nav>
+      <article class="primer">
+        {{ content }}
+      </article>
+    </main>
+    <div id="fig-live" class="sr-only" aria-live="polite"></div>
+    <footer class="site">{{ site.title }}</footer>
+  </div>
+  <script src="{{ '/assets/js/ux.js' | relative_url }}"></script>
+  {% if page.scripts %}
+  {% for s in page.scripts %}
+  <script src="{{ '/assets/js/' | append: s | relative_url }}"></script>
+  {% endfor %}
+  {% endif %}
+  {% if page.glossary %}
+  <div class="glossary-scrim" id="glossary-scrim"></div>
+  <aside class="glossary" id="glossary">
+    <div class="glossary-head">
+      <span>Glossary</span>
+      <button class="glossary-close" type="button" aria-label="Close glossary">×</button>
+    </div>
+    {% for g in page.glossary %}
+    <div class="gl-item">
+      <button class="gl-term" type="button" aria-expanded="false">{{ g.term }}</button>
+      <div class="gl-def">{{ g.def }}</div>
+    </div>
+    {% endfor %}
+  </aside>
+  {% endif %}
+</body>
+</html>
