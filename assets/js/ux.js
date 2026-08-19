@@ -64,6 +64,64 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  (function footnotes() {
+    if (!article) return;
+    const notes = {};
+    article.querySelectorAll(".footnote li[id], .footnotes li[id]").forEach(function (li) {
+      const clone = li.cloneNode(true);
+      clone.querySelectorAll(".footnote-backref").forEach(function (a) { a.remove(); });
+      notes["#" + li.id] = clone.innerHTML;
+    });
+    const refs = article.querySelectorAll("a.footnote-ref");
+    if (!refs.length || !Object.keys(notes).length) return;
+
+    const pop = document.createElement("aside");
+    pop.id = "fn-pop";
+    pop.className = "fn-pop";
+    pop.setAttribute("hidden", "");
+    pop.setAttribute("role", "note");
+    document.body.appendChild(pop);
+
+    let hideT = null;
+    function show(ref) {
+      const html = notes[ref.getAttribute("href")];
+      if (!html) return;
+      clearTimeout(hideT);
+      pop.innerHTML = html;
+      pop.removeAttribute("hidden");
+      pop.classList.add("on");
+      const r = ref.getBoundingClientRect();
+      const pw = pop.offsetWidth || 280;
+      const ph = pop.offsetHeight || 80;
+      const gutter = 16;
+      let left = window.innerWidth - pw - gutter;
+      if (window.matchMedia("(min-width: 1100px)").matches) {
+        const col = article.getBoundingClientRect();
+        left = Math.min(window.innerWidth - pw - gutter, col.right + 18);
+      }
+      let top = r.top;
+      if (top + ph > window.innerHeight - gutter) top = window.innerHeight - ph - gutter;
+      if (top < gutter) top = gutter;
+      pop.style.top = top + "px";
+      pop.style.left = Math.max(gutter, left) + "px";
+    }
+    function hide() {
+      hideT = setTimeout(function () {
+        pop.classList.remove("on");
+        pop.setAttribute("hidden", "");
+      }, 160);
+    }
+
+    refs.forEach(function (ref) {
+      ref.addEventListener("mouseenter", function () { show(ref); });
+      ref.addEventListener("mouseleave", hide);
+      ref.addEventListener("focus", function () { show(ref); });
+      ref.addEventListener("blur", hide);
+    });
+    pop.addEventListener("mouseenter", function () { clearTimeout(hideT); });
+    pop.addEventListener("mouseleave", hide);
+  })();
+
   const panel = document.getElementById("glossary");
   const toggle = document.querySelector(".glossary-toggle");
   const close = document.querySelector(".glossary-close");

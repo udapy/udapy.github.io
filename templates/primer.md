@@ -4,7 +4,7 @@ title: "TITLE — specific, outcome-first"
 lead: "One sentence. What this is and why it isn't a survey."
 # permalink: /optional-short-url/
 date: YYYY-MM-DD
-author: Uday
+author: Uday Phalak
 tags:
   - tag
 glossary:

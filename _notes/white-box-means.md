@@ -5,7 +5,7 @@ lead: "The goal was last-layer ReLU means of a 256×32 random MLP, under a FLOP 
 permalink: /primer/
 date: 2026-08-19
 updated: 2026-08-19
-author: Uday
+author: Uday Phalak
 tags:
   - White-box estimation
   - Random MLPs

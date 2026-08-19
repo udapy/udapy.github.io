@@ -16,14 +16,14 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("slug")
     p.add_argument("title")
-    p.add_argument("--author", default="Uday")
+    p.add_argument("--author", default="Uday Phalak")
     args = p.parse_args()
 
     today = dt.date.today().isoformat()
     text = TEMPLATE.read_text()
     text = text.replace("TITLE — specific, outcome-first", args.title)
     text = text.replace("YYYY-MM-DD", today)
-    text = text.replace("author: Uday", f"author: {args.author}")
+    text = text.replace("author: Uday Phalak", f"author: {args.author}")
     NOTES.mkdir(exist_ok=True)
     dest = NOTES / f"{args.slug}.md"
     if dest.exists():

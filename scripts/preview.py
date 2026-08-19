@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 NOTES = ROOT / "_notes"
 PREVIEW = ROOT / "_preview"
 CSS_SRC = ROOT / "assets" / "css" / "site.css"
-SITE_TITLE = "Uday"
+SITE_TITLE = "Uday Phalak"
 
 
 def split_fm(text: str) -> tuple[dict, str]:
@@ -62,12 +62,14 @@ def page(title: str, inner: str, scripts: list[str] | None = None, primer: bool 
     if scripts:
         extra = "\n".join(f'  <script src="js/{s}"></script>' for s in scripts)
     chrome = ""
+    grain = ""
     if primer:
         chrome = """
   <div class="progress" id="progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>"""
         extra = '  <script src="js/ux.js"></script>\n' + extra
     else:
-        extra = '  <script src="js/blackhole.js"></script>\n' + extra
+        grain = '\n  <canvas id="grain-bg" class="grain-bg" aria-hidden="true"></canvas>'
+        extra = extra + '\n  <script src="js/grain.js"></script>'
     body_class = "primer-page" if primer else "home-page"
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -82,7 +84,7 @@ def page(title: str, inner: str, scripts: list[str] | None = None, primer: bool 
   <link rel="stylesheet" href="site.css">
 </head>
 <body class="{body_class}">
-  <a class="skip" href="#main">Skip to content</a>{chrome}
+  <a class="skip" href="#main">Skip to content</a>{grain}{chrome}
   <div class="wrap">
     <header>
       <nav class="site-nav" aria-label="Site">
@@ -161,17 +163,12 @@ def main() -> None:
         for u, t, d, dt in cards
     )
     home = f"""
-    <section class="home-hero">
-      <header class="home">
-        <p class="kicker">कर्मसु कौशल्यम् · “skill in actions”</p>
-        <h1>{SITE_TITLE}</h1>
-        <p class="lead">Hey — I am Uday Ramesh Phalak. This space documents my applied research at the intersection of advanced AI, human-centric design, and my primary focus: AI safety. Building on early work in adversarial ML defense (2017–2019), the goal is the same: as the models get more capable, they should stay interpretable and actually safe.</p>
-        <p class="home-focus">Alignment · interpretability · neurosymbolic models · generative UX</p>
-      </header>
-      <div class="home-bh" aria-hidden="true">
-        <canvas id="cv-blackhole" width="420" height="420"></canvas>
-      </div>
-    </section>
+    <header class="home">
+      <p class="kicker">कर्मसु कौशल्यम् · “skill in actions”</p>
+      <h1>{SITE_TITLE}</h1>
+        <p class="lead">Hey — I am Uday Phalak. This space documents my applied research at the intersection of advanced AI, human-centric design, and my primary focus: AI safety. Building on early work in adversarial ML defense (2017–2019), the goal is the same: as the models get more capable, they should stay interpretable and actually safe.</p>
+      <p class="home-focus">Alignment · interpretability · neurosymbolic models · generative UX</p>
+    </header>
     <p class="writing-label">Notes</p>
     <ul class="note-list">{lis}</ul>
 """
